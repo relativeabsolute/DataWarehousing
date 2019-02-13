@@ -11,10 +11,8 @@ def manage_tables(cursor):
     cursor.execute('''CREATE TABLE IF NOT EXISTS products
         (Manufacturer TEXT, ProductName TEXT, Size REAL, SizeUnit TEXT, ItemType TEXT, SKU INT, BasePrice REAL)''')
 
-# My attempt to make the sales output table
-def manage_output(cursor):
     cursor.execute('''DROP TABLE IF EXISTS sales_record''')
-    cursor.execute('''CREATE TABLE IF NOT EXISTS sales_record (Date TEXT, CustomerNum INT, SKU INT, salePrice FLOAT)''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS sales_record (Date TEXT, CustomerNum INT, SKU INT, SalePrice REAL)''')
 
 
 # c is database cursor
@@ -31,7 +29,6 @@ def import_products(c, filename):
                     match = re.match(r'(\w*[\./]?\w+)\s*(\w+)?', row[key])
                     # not going to error check...
                     groups = match.groups()
-                    print(str(groups))
                     result['SizeUnit'] = ''
                     if groups[1] is not None:
                         result['SizeUnit'] = groups[1]
@@ -57,12 +54,13 @@ def get_item_type(c, type_name):
     rows = c.fetchall()
     return rows[random.randrange(0, len(rows))]
 
- ####### Added this to get the non probability products, not sure if this is correct
+
+# Added this to get the non probability products, not sure if this is correct
 def non_probability_items(c, number_items, price_multiplier):
-    c.execute('''SELECT * FROM products where ItemType NOT IN (Milk, Cereal, Baby Food, Diapers, Peanut Butter, Jelly/Jam''')
+    c.execute('''SELECT * FROM products where ItemType NOT IN ('Milk', 'Cereal', 'Baby Food', 'Diapers', 'Peanut Butter', 'Jelly/Jam')''')
     rows = c.fetchall()
-    record = random.sample(rows,k=number_items)
-    return {'SKU': record[5], 'SalePrice': record[6] * price_multiplier}
+    records = random.sample(rows,k=number_items)
+    return [{'SKU': record[5], 'SalePrice': record[6] * price_multiplier} for record in records]
 
 
 # returns partial (SKU and sale price) sales records of items bought with probability
@@ -71,8 +69,8 @@ def do_probability_sales(c, price_multiplier):
     probabilities = [{ 'type': 'Milk', 'prob': 0.7, 'yes': {'type': 'Cereal', 'prob': 0.5},
                       'no': {'type': 'Cereal', 'prob': 0.05}},
                      {'type': 'Baby Food', 'prob': 0.2, 'yes': {'type': 'Diapers', 'prob': 0.8},
-                      'no': {'type': 'Diaper', 'prob': 0.01}},
-                     {'type': 'Breads', 'prob': 0.5},
+                      'no': {'type': 'Diapers', 'prob': 0.01}},
+                     {'type': 'Bread', 'prob': 0.5},
                      {'type': 'Peanut Butter', 'prob': 0.1, 'yes': {'type': 'Jelly/Jam', 'prob': 0.9},
                       'no': {'type': 'Jelly/Jam', 'prob': 0.05}}
                      ]
@@ -100,28 +98,48 @@ def do_sales(c):
     price_multiplier = 1.05
     max_items = 70
 
-    records = []
-
     for i in range(365):
+        print("Day {}".format(i))
         num_customers = random.randint(min_customers, max_customers) # min_customers <= num_customers <= max_customers
         if i % 7 == 0 or i % 7 == 6: # jan 1 2017 was a sunday
             num_customers += weekend_increase
         for customer in range(num_customers):
+            print("Customer {}".format(customer))
             num_items = random.randint(1, max_items)
+            print("Probability sales")
             prob_items = do_probability_sales(c, price_multiplier)
             current_sales = prob_items
             if num_items < len(prob_items):
                 current_sales = prob_items[:num_items]
             else:
+                print("Non probability sales")
                 # my attempt to add to the current sales
-                current_sales.append(non_probability_items(c,len(num_items)-len(current_sales),price_multiplier))
+                current_sales.extend(non_probability_items(c, num_items - len(current_sales), price_multiplier))
 
-            for i in range(len(current_sales)):
-                current_sales[i].update({'Date': (datetime.date(2017, 1, 1) + datetime.timedelta(days=i)).isoformat(),
+            for sale_index in range(len(current_sales)):
+                current_sales[sale_index].update({'Date': (datetime.date(2017, 1, 1) + datetime.timedelta(days=i)).isoformat(),
                                          'CustomerNum': customer + 1})
-            records.extend(current_sales)
-    # My attempt to add the current sales to the sales table that I made previously
-    c.executemany('''INSERT INTO sales_record VALUES (?, ?, ?, ?)''', current_sales)
+        # add sales per customer
+            c.executemany('''INSERT INTO sales_record VALUES (:Date, :CustomerNum, :SKU, :SalePrice)''', current_sales)
+
+
+def compute_summaries(c):
+    # number of customers is sum of max customer numbers per day
+    c.execute('''SELECT SUM(customers.maxNum) from
+        (SELECT MAX(sr.CustomerNum) as maxNum, sr.Date from sales_record as sr GROUP BY sr.Date) as customers''')
+    print("Number of customers {}".format(c.fetchone()))
+
+    # total sales
+    c.execute('''SELECT SUM(SalePrice) from sales_record''')
+    print("Total sales: {}".format(c.fetchone()))
+
+    # total items bought
+    c.execute('''SELECT COUNT(SKU) from sales_record''')
+    print("Total items bought: {}".format(c.fetchone()))
+
+    # top 10 selling items with counts
+    c.execute('''SELECT SKU, COUNT(SKU) from sales_record GROUP BY SKU ORDER BY COUNT(SKU) LIMIT 10''')
+    print("Top 10 selling items: {}".format(c.fetchall()))
 
 
 if __name__ == '__main__':
@@ -132,8 +150,8 @@ if __name__ == '__main__':
         conn = sqlite3.connect('grocery.db')
         c = conn.cursor()
         manage_tables(c)
-        manage_output(c)
         import_products(c, sys.argv[1])
         conn.commit()
-        print(str(get_item_type(c, 'Milk')))
         do_sales(c)
+        conn.commit()
+        compute_summaries(c)
