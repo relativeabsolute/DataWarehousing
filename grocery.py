@@ -10,7 +10,11 @@ def manage_tables(cursor):
     cursor.execute('''DROP TABLE IF EXISTS products''')
     cursor.execute('''CREATE TABLE IF NOT EXISTS products
         (Manufacturer TEXT, ProductName TEXT, Size REAL, SizeUnit TEXT, ItemType TEXT, SKU INT, BasePrice REAL)''')
-    # TODO: replicate above two calls for sales_record table
+
+# My attempt to make the sales output table
+cursor.execute('''DROP TABLE IF EXISTS sales_record''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS sales_record
+    (Date TEXT, CustomerNum INT, SKU INT, salePrice FLOAT)''')
 
 
 # c is database cursor
@@ -53,6 +57,13 @@ def get_item_type(c, type_name):
     rows = c.fetchall()
     return rows[random.randrange(0, len(rows))]
 
+ ####### Added this to get the non probability products, not sure if this is correct
+def non_probability_items(c, number_items, price_multiplier):
+    c.execute('''SELECT * FROM products where ItemType NOT IN (Milk, Cereal, Baby Food, Diapers, Peanut Butter, Jelly/Jam''')
+    rows = c.fetchall()
+    record = random.sample(rows,k=number_items)
+    return {'SKU': record[5], 'SalePrice': record[6] * price_multiplier}
+
 
 # returns partial (SKU and sale price) sales records of items bought with probability
 def do_probability_sales(c, price_multiplier):
@@ -61,9 +72,9 @@ def do_probability_sales(c, price_multiplier):
                       'no': {'type': 'Cereal', 'prob': 0.05}},
                      {'type': 'Baby Food', 'prob': 0.2, 'yes': {'type': 'Diapers', 'prob': 0.8},
                       'no': {'type': 'Diaper', 'prob': 0.01}},
-                     {'type': 'Bread', 'prob': 0.5},
+                     {'type': 'Breads', 'prob': 0.5},
                      {'type': 'Peanut Butter', 'prob': 0.1, 'yes': {'type': 'Jelly/Jam', 'prob': 0.9},
-                      'no': {'type': 'Jam/Jelly', 'prob': 0.05}}
+                      'no': {'type': 'Jelly/Jam', 'prob': 0.05}}
                      ]
     counter = 0
     for item_dict in probabilities:
@@ -102,15 +113,15 @@ def do_sales(c):
             if num_items < len(prob_items):
                 current_sales = prob_items[:num_items]
             else:
-                # TODO: extend current_sales with partial sales records of items that are not probability types
-                # I'd suggest doing a select of products whose type are not in the list and then picking a random one
-                # replace pass with the functionality
-                pass
+                # my attempt to add to the current sales
+                current_sales.append(non_probability_items(c,len(num_items)-len(current_sales),price_multiplier))
+
             for i in range(len(current_sales)):
-                current_sales[i].update({'CustomerNum': customer + 1, 'Date': (datetime.date(2017, 1, 1) +
-                                                                              datetime.timedelta(days=i)).isoformat()})
+                current_sales[i].update({'Date': (datetime.date(2017, 1, 1) + datetime.timedelta(days=i)).isoformat(),
+                                         'CustomerNum': customer + 1})
             records.extend(current_sales)
-    # TODO: insert sales records into database and summarize them
+    # My attempt to add the current sales to the sales table that I made previously
+    c.executemany('''INSERT INTO sales_record VALUES (?, ?, ?, ?)''', current_sales)
 
 
 if __name__ == '__main__':
