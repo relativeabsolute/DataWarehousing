@@ -12,9 +12,9 @@ def manage_tables(cursor):
         (Manufacturer TEXT, ProductName TEXT, Size REAL, SizeUnit TEXT, ItemType TEXT, SKU INT, BasePrice REAL)''')
 
 # My attempt to make the sales output table
-cursor.execute('''DROP TABLE IF EXISTS sales_record''')
-cursor.execute('''CREATE TABLE IF NOT EXISTS sales_record
-    (Date TEXT, CustomerNum INT, SKU INT, salePrice FLOAT)''')
+def manage_output(cursor):
+    cursor.execute('''DROP TABLE IF EXISTS sales_record''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS sales_record (Date TEXT, CustomerNum INT, SKU INT, salePrice FLOAT)''')
 
 
 # c is database cursor
@@ -132,6 +132,7 @@ if __name__ == '__main__':
         conn = sqlite3.connect('grocery.db')
         c = conn.cursor()
         manage_tables(c)
+        manage_output(c)
         import_products(c, sys.argv[1])
         conn.commit()
         print(str(get_item_type(c, 'Milk')))
