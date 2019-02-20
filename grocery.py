@@ -14,11 +14,14 @@ def manage_tables(cursor):
     cursor.execute('''DROP TABLE IF EXISTS sales_record''')
     cursor.execute('''CREATE TABLE IF NOT EXISTS sales_record (Date TEXT, CustomerNum INT, SKU INT, SalePrice REAL)''')
 
+    cursor.execute('''DROP TABLE IF EXISTS hw2''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS sales_record (ItemType TEXT, SalesPerDay INT, AvgSalePer2Weeks INT)''')
+
 
 # c is database cursor
 # filename is name of file to import products from
 def import_products(c, filename):
-    with open(filename, 'r', newline='') as file_handle:
+    with open(filename, 'r') as file_handle:
         reader = csv.DictReader(file_handle, delimiter='|', quoting=csv.QUOTE_NONE)
         rows = []
         for row in reader:
@@ -57,7 +60,7 @@ def get_item_type(c, type_name):
 
 # Added this to get the non probability products, not sure if this is correct
 def non_probability_items(c, number_items, price_multiplier):
-    c.execute('''SELECT * FROM products where ItemType NOT IN ('Milk', 'Cereal', 'Baby Food', 'Diapers', 'Peanut Butter', 'Jelly/Jam')''')
+    c.execute('''SELECT * FROM products where ItemType NOT IN ('Milk', 'Cereal', 'Baby Food', 'Diapers', 'Bread', 'Peanut Butter', 'Jelly/Jam')''')
     rows = c.fetchall()
     records = random.sample(rows,k=number_items)
     return [{'SKU': record[5], 'SalePrice': record[6] * price_multiplier} for record in records]
@@ -155,3 +158,80 @@ if __name__ == '__main__':
         do_sales(c)
         conn.commit()
         compute_summaries(c)
+
+####### Part 2
+# sales_record column names Date, CustomerNum, SKU, SalePrice
+conn = sqlite3.connect('grocery.db')
+c = conn.cursor()
+
+# Number of milk sold in one day
+c.execute("select count(date) from sales_record where sku in (select sku from products where itemtype = 'Milk') and Date == '2017-01-01'")
+daymilk = c.fetchall()
+# Average sale of milk per day looking at 2 weeks of transactions
+c.execute("select count(date)/14 from sales_record where sku in (select sku from products where itemtype = 'Milk') and Date between '2017-01-01' and '2017-01-15'")
+avgmilk = c.fetchall()
+milkdata = ('Milk', daymilk[0][0], avgmilk[0][0])
+print(milkdata)
+c.executemany('''INSERT INTO hw2 VALUES (:ItemType, :SalesPerDay, :AvgSalePer2Weeks)''', milkdata)
+
+Do the same for Cereal, Baby Food, Diapers, Peanut Butter, Jelly/Jam, etc
+c.execute("select count(date) from sales_record where sku in (select sku from products where itemtype = 'Cereal') and Date == '2017-01-01'")
+daycereal = c.fetchall()
+c.execute("select count(date)/14 from sales_record where sku in (select sku from products where itemtype = 'Cereal') and Date between '2017-01-01' and '2017-01-15'")
+avgcereal = c.fetchall()
+cerealdata = ('Cereal', daycereal[0][0], avgcereal[0][0])
+print(cerealdata)
+c.executemany('''INSERT INTO hw2 VALUES (:ItemType, :SalesPerDay, :AvgSalePer2Weeks)''', cerealdata)
+
+c.execute("select count(date) from sales_record where sku in (select sku from products where itemtype = 'Baby Food') and Date == '2017-01-01'")
+daybbfood = c.fetchall()
+c.execute("select count(date)/14 from sales_record where sku in (select sku from products where itemtype = 'Baby Food') and Date between '2017-01-01' and '2017-01-15'")
+avgbbfood = c.fetchall()
+bbfooddata = ('Baby Food', daybbfood[0][0], avgbbfood[0][0])
+print(bbfooddata)
+c.executemany('''INSERT INTO hw2 VALUES (:ItemType, :SalesPerDay, :AvgSalePer2Weeks)''', bbfooddata)
+
+c.execute("select count(date) from sales_record where sku in (select sku from products where itemtype = 'Diapers') and Date == '2017-01-01'")
+dayDiapers = c.fetchall()
+c.execute("select count(date)/14 from sales_record where sku in (select sku from products where itemtype = 'Diapers') and Date between '2017-01-01' and '2017-01-15'")
+avgDiapers = c.fetchall()
+Diapersdata = ('Diapers', dayDiapers[0][0], avgDiapers[0][0])
+print(Diapersdata)
+c.executemany('''INSERT INTO hw2 VALUES (:ItemType, :SalesPerDay, :AvgSalePer2Weeks)''', Diapersdata)
+
+c.execute("select count(date) from sales_record where sku in (select sku from products where itemtype = 'Bread') and Date == '2017-01-01'")
+dayBread = c.fetchall()
+c.execute("select count(date)/14 from sales_record where sku in (select sku from products where itemtype = 'Bread') and Date between '2017-01-01' and '2017-01-15'")
+avgBread = c.fetchall()
+Breaddata = ('Bread', dayBread[0][0], avgBread[0][0])
+print(Breaddata)
+c.executemany('''INSERT INTO hw2 VALUES (:ItemType, :SalesPerDay, :AvgSalePer2Weeks)''', Breaddata)
+
+c.execute("select count(date) from sales_record where sku in (select sku from products where itemtype = 'Peanut Butter') and Date == '2017-01-01'")
+daypb = c.fetchall()
+c.execute("select count(date)/14 from sales_record where sku in (select sku from products where itemtype = 'Peanut Butter') and Date between '2017-01-01' and '2017-01-15'")
+avgpb = c.fetchall()
+pbdata = ('Peanut Butter', daypb[0][0], avgpb[0][0])
+print(pbdata)
+c.executemany('''INSERT INTO hw2 VALUES (:ItemType, :SalesPerDay, :AvgSalePer2Weeks)''', pbdata)
+
+c.execute("select count(date) from sales_record where sku in (select sku from products where itemtype = 'Jelly/Jam') and Date == '2017-01-01'")
+dayjj = c.fetchall()
+c.execute("select count(date)/14 from sales_record where sku in (select sku from products where itemtype = 'Jelly/Jam') and Date between '2017-01-01' and '2017-01-15'")
+avgjj = c.fetchall()
+jjdata = ('Jelly/Jam', dayjj[0][0], avgjj[0][0])
+print(jjdata)
+c.executemany('''INSERT INTO hw2 VALUES (:ItemType, :SalesPerDay, :AvgSalePer2Weeks)''', jjdata)
+
+c.execute("select count(date) from sales_record where sku in (select sku from products where itemtype not in "
+          "('Milk', 'Cereal', 'Baby Food', 'Diapers', 'Bread', 'Peanut Butter', 'Jelly/Jam')) and Date == '2017-01-01'")
+dayee = c.fetchall()
+c.execute("select count(date)/14 from sales_record where sku in (select sku from products where itemtype not in "
+          "('Milk', 'Cereal', 'Baby Food', 'Diapers', 'Bread', 'Peanut Butter', 'Jelly/Jam')) and Date between '2017-01-01' and '2017-01-15'")
+avgee = c.fetchall()
+eedata = ('Everything else', dayee[0][0], avgee[0][0])
+print(eedata)
+c.executemany('''INSERT INTO hw2 VALUES (:ItemType, :SalesPerDay, :AvgSalePer2Weeks)''', eedata)
+
+#to export the db table hw2 as a csv?
+#csvWriter.writerows(hw2)
