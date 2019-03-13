@@ -4,6 +4,7 @@ import csv
 import re
 import random
 import datetime
+import math
 
 
 def manage_tables(cursor):
@@ -56,6 +57,7 @@ def get_partial_sale(c, type_name, price_multiplier):
 # get a random row that is the given type
 # returns [SKU, BasePrice]
 def get_item_type(c, type_name):
+    is_milk = type_name == 'Milk'
     c.execute('''SELECT products.SKU, products.BasePrice
      FROM products join inventory on products.SKU = inventory.SKU
      where ItemType = ? and NumberOnHand > 0''', [type_name])
@@ -69,8 +71,8 @@ def get_item_type(c, type_name):
 def non_probability_items(c, number_items, price_multiplier):
     c.execute('''SELECT products.SKU, products.BasePrice
         FROM products join inventory on products.SKU = inventory.SKU
-        where ItemType NOT IN ('Milk', 'Cereal', 'Baby Food', 'Diapers', 'Peanut Butter', 'Jelly/Jam'
-        and NumberOnHand > 0)''')
+        where ItemType NOT IN ('Milk', 'Cereal', 'Baby Food', 'Diapers', 'Peanut Butter', 'Jelly/Jam')
+        and NumberOnHand > 0''')
     rows = c.fetchall()
     records = random.sample(rows,k=number_items)
     return [{'SKU': record[0], 'SalePrice': record[1] * price_multiplier} for record in records]
@@ -92,7 +94,7 @@ max_items = 70
 
 
 def initial_inventory(c):
-    expected = read_expected_daily("expected_daily.csv")
+    expected = expected_sales()
     result = []
     for row in c.execute('''SELECT SKU, ItemType FROM products'''):
         row_dict = {'SKU': row[0]}
@@ -112,16 +114,16 @@ def initial_inventory(c):
 
 
 def expected_sales():
-    expected_customers = (min_customers + max_customers) / 2
+    expected_customers = max_customers
     result = {}
     for item_dict in probabilities:
         prob = item_dict['prob']
-        result[item_dict['type']] = expected_customers * prob
+        result[item_dict['type']] = math.ceil(expected_customers * prob)
         if 'yes' in item_dict:
-            result[item_dict['yes']['type']] = expected_customers * prob * item_dict['yes']['prob']
+            result[item_dict['yes']['type']] = math.ceil(expected_customers * prob * item_dict['yes']['prob'])
         if 'no' in item_dict:
-            result[item_dict['no']['type']] = expected_customers * (1 - prob) * item_dict['no']['prob']
-    result['regular'] = expected_customers * (max_items / 2) / 66
+            result[item_dict['no']['type']] = math.ceil(expected_customers * (1 - prob) * item_dict['no']['prob'])
+    result['regular'] = math.ceil(expected_customers * (max_items / 2) / 66)
     return result
 
 
@@ -149,21 +151,15 @@ def do_probability_sales(c, price_multiplier):
     return result
 
 
-def do_deliveries(c):
-    for row in c.execute('''SELECT products.SKU, NumberOnHand, ExpectedDaily from products
+def do_milk_deliveries(c):
+    print("Milk deliveries")
+    c.execute('''SELECT products.SKU, NumberOnHand, ExpectedDaily from products
             join inventory on products.SKU = inventory.SKU
-            where ItemType <> 'Milk' and NumberOnHand < 3 * ExpectedDaily'''):
-        needed = 3 * row[2] - row[1] # 3 * Expected - NumberOnHand
-        cases = needed // 12 + 1
-        ordered = cases * 12
-        c.execute('''UPDATE inventory
-            SET NumberOnHand = NumberOnHand + ?,
-            TotalCasesOrdered = TotalCasesOrdered + ?
-            WHERE SKU = ?''', [ordered, cases, row[0]])
-    for row in c.execute('''SELECT products.SKU, NumberOnHand, ExpectedDaily from products
-            join inventory on products.SKU = inventory.SKU
-            where ItemType = 'Milk' and NumberOnHand < 1.5 * ExpectedDaily'''):
-        needed = int(1.5 * row[2]) - row[1]
+            where ItemType = 'Milk' and NumberOnHand < 1.5 * ExpectedDaily''')
+    rows = c.fetchall()
+    for row in rows:
+        print('Ordering more of item with SKU {}'.format(row[0]))
+        needed = math.ceil(1.5 * row[2]) - row[1]
         cases = needed // 12 + 1
         ordered = cases * 12
         c.execute('''UPDATE inventory
@@ -172,9 +168,27 @@ def do_deliveries(c):
                     WHERE SKU = ?''', [ordered, cases, row[0]])
 
 
-def do_sales(c):
-    for i in range(365):
+def do_deliveries(c):
+    print("Non-milk deliveries")
+    c.execute('''SELECT products.SKU, NumberOnHand, ExpectedDaily from products
+            join inventory on products.SKU = inventory.SKU
+            where ItemType <> 'Milk' and NumberOnHand < 3 * ExpectedDaily''')
+    rows = c.fetchall()
+    for row in rows:
+        print("Ordering more of item with SKU {}".format(row[0]))
+        needed = 3 * row[2] - row[1] # 3 * Expected - NumberOnHand
+        cases = needed // 12 + 1
+        ordered = cases * 12
+        c.execute('''UPDATE inventory
+            SET NumberOnHand = NumberOnHand + ?,
+            TotalCasesOrdered = TotalCasesOrdered + ?
+            WHERE SKU = ?''', [ordered, cases, row[0]])
+
+
+def do_sales(c, days):
+    for i in range(days):
         print("Day {}".format(i))
+        do_milk_deliveries(c)
         if i % 3 == 0:
             do_deliveries(c)
         num_customers = random.randint(min_customers, max_customers) # min_customers <= num_customers <= max_customers
@@ -234,7 +248,7 @@ def compute_summaries(c):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print("Usage: grocery <product_file>")
+        print("Usage: grocery <product_file> [days]")
     else:
         random.seed()
         conn = sqlite3.connect('grocery.db')
@@ -243,6 +257,8 @@ if __name__ == '__main__':
         import_products(c, sys.argv[1])
         initial_inventory(c)
         conn.commit()
-        do_sales(c)
+        days = 365
+        if len(sys.argv) == 3:
+            days = int(sys.argv[2])
+        do_sales(c, days)
         conn.commit()
-        #compute_summaries(c)
