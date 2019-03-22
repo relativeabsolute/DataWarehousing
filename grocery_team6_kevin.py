@@ -248,8 +248,8 @@ def compute_summaries(c):
 
 
 if __name__ == '__main__':
-    #sys.argv = ["grocery.py", "Products1.txt", "dates.py"]
-    sys.argv = ["grocery.py", "Products1.txt"]
+    #sys.argv = ["grocery_team6_kevin.py", "Products1.txt", "dates.py"]
+    sys.argv = ["grocery_team6_kevin.py", "Products1.txt"]
 
     if len(sys.argv) < 2:
         print("Usage: grocery <product_file> [days]")
