@@ -87,11 +87,11 @@ probabilities = [{ 'type': 'Milk', 'prob': 0.7, 'yes': {'type': 'Cereal', 'prob'
                      {'type': 'Peanut Butter', 'prob': 0.1, 'yes': {'type': 'Jelly/Jam', 'prob': 0.9},
                       'no': {'type': 'Jelly/Jam', 'prob': 0.05}}]
 
-min_customers = 1000
-max_customers = 1040
+min_customers = 1020
+max_customers = 1060
 weekend_increase = 50
-price_multiplier = 1.05
-max_items = 70
+price_multiplier = 1.2
+max_items = 80
 
 
 def initial_inventory(c):
@@ -248,6 +248,8 @@ def compute_summaries(c):
 
 
 if __name__ == '__main__':
+    #sys.argv = ["grocery.py", "Products1.txt", "dates.py"]
+    sys.argv = ["grocery.py", "Products1.txt"]
 
     if len(sys.argv) < 2:
         print("Usage: grocery <product_file> [days]")
