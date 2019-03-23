@@ -1,0 +1,183 @@
+/*
+SKU		ProductName			Manufacturer
+42732001	Salt Kosher			Morton
+42733001	Sea Salt Coarse			Morton
+42734001	Sea Salt Fine			Morton
+42760001	Vanilla, Butter & Nut Exctract	Mccormick
+*/
+SELECT * FROM products where Manufacturer = 'Morton' or Manufacturer = 'Mccormick';
+/*
+SKU		ProductName		Manufacturer
+42753001	Juice Cherry Limeade	Minute Maid
+42754001	Orange Juice No Pulp	Minute Maid
+42962001	Juice Boxes Apple	Juicy Juice
+42963001	Juice Orange Tangerine	Juicy Juice
+*/
+SELECT * FROM products where (Manufacturer = 'Minute Maid' 
+and lower(ProductName) LIKE '%juice%') or (Manufacturer = 'Juicy Juice');
+/*
+SKU		ProductName		Manufacturer
+42751001	Coolers Fruit Punch	Minute Maid
+42752001	Fruit Drink Peach	Minute Maid
+42961001	Nectar Guava		Jumex
+42863001	Bursts Cherry		Kool Aid
+42864001	Jammers Cherry		Kool Aid
+*/
+SELECT * FROM products where
+(Manufacturer = 'Minute Maid' and lower(ProductName) NOT LIKE '%juice%')
+or (Manufacturer = 'Jumex') or (Manufacturer = 'Kool Aid');
+/*
+SKU		ProductName		Manufacturer
+42782001	Rice Brown		Mahatma
+42783001	Rice Jasmine		Mahatma
+42784001	Rice White		Mahatma
+*/
+SELECT * FROM products where Manufacturer = 'Mahatma';
+/*
+SKU		ProductName			Manufacturer
+42791001	Gas Relief Drops Natural Berry	Little Tummys
+*/
+SELECT * FROM products where Manufacturer = 'Little Tummys';
+/*
+SKU		ProductName			Manufacturer
+42792001	Spray & Drops Saline		Little Noses
+*/
+SELECT * FROM products where Manufacturer = 'Little Noses';
+/*
+SKU		ProductName			Manufacturer
+42809001	Mint Shield Mouthwash		Listerine
+*/
+SELECT * FROM products where Manufacturer = 'Listerine';
+/*
+SKU		ProductName			Manufacturer
+42793001	Bars Marshmallow Treat		Little Debbie
+42794001	Bars Nutty			Little Debbie
+*/
+SELECT * FROM products where Manufacturer = 'Little Debbie' and lower (ProductName) LIKE '%bars%';
+/*
+SKU		ProductName			Manufacturer
+42795001	Brownies Cosmic			Little Debbie
+42796001	Brownies Fudge			Little Debbie
+42801001	Cookies Oatmeal Cream Pies	Little Debbie
+42802001	Cookies Oatmeal Cream Pies	Little Debbie
+*/
+SELECT * FROM products where Manufacturer = 'Little Debbie' and 
+(lower (ProductName) LIKE '%brownie%' or lower (ProductName) LIKE '%cookie%');
+/*
+SKU		ProductName			Manufacturer
+42798001	Cake Cloud Cakes		Little Debbie
+42799001	Cake Swiss Rolls		Little Debbie
+42800001	Cake Zebra Cakes		Little Debbie
+42803001	Cupcakes Chocolate		Little Debbie
+42804001	Donuts Powdered Bagged Mini	Little Debbie
+42797001	Buns Honey			Little Debbie
+42807001	Pie Marshmallow Chocolate	Little Debbie
+43044001	Cake Ding Dongs			Hostess
+*/
+SELECT * FROM products where
+Manufacturer = 'Little Debbie' and 
+(lower (ProductName) LIKE '%cake%' or lower (ProductName) LIKE '%donuts%' or lower (ProductName) LIKE '%buns%'
+or (lower (ProductName) LIKE '%pie%' and lower (ProductName) NOT LIKE '%cookie%')) or
+Manufacturer = 'Hostess';
+/*
+SKU		ProductName			Manufacturer
+42805001	Muffins Banana Nut		Little Debbie
+42806001	Muffins Blueberry		Little Debbie
+42808001	Spin Wheels Pecan		Little Debbie
+*/
+SELECT * FROM products where 
+Manufacturer = 'Little Debbie' and 
+(lower (ProductName) LIKE '%muffins%' or lower (ProductName) LIKE '%wheels%');
+/*
+SKU		ProductName						Manufacturer
+42810001	Tea Bags Black Tea & Honey Berry Lemonade Decaf		Lipton
+42811001	Tea Bags Green Tea & Honey Coconut Passionfruit		Lipton
+42812001	Tea Bags Green Tea & Honey Dragonfruit Peach		Lipton
+42813001	Tea Stix Tea & Honey Lemon				Lipton
+*/
+SELECT * FROM products where Manufacturer = 'Lipton';
+/*
+SKU		ProductName			Manufacturer
+42814001	Bagels Blueberry		Lenders
+42815001	Bagels Cinnamon Raisin Swirl	Lenders
+42816001	Bagels New York Style Plain	Lenders
+42817001	Bagels Plain			Lenders
+*/
+SELECT * FROM products where Manufacturer = 'Lenders';
+/*
+SKU		ProductName			Manufacturer
+42818001	Ham & Cheese Whole Grain Crust	Lean Pockets
+42819001	Lean Cusine Frozen		Lean Cusine
+42865001	Oven Cravers Cordon Bleu	Koch Foods
+*/
+SELECT * FROM products where (Manufacturer like '%Lean%' and Manufacturer != 'Oxi Clean')
+or (Manufacturer = 'Koch Foods');
+/*
+SKU		ProductName			Manufacturer
+42848001	Eggs Large			Kroger
+42849001	Eggs Large			Kroger
+*/
+SELECT * FROM products where Manufacturer = 'Kroger' and lower(ProductName) like '%eggs%';
+/*
+SKU		ProductName				Manufacturer
+42858001	Salad Dressing Italian			Kraft
+42859001	Salad Dressing Ranch			Kraft
+42860001	Salad Dressing Thousand Island		Kraft
+42861001	Salad Dressing Zesty Italian		Kraft
+42869001	Salad Dressing French			Kens
+42870001	Salad Dressing Italian			Kens
+42871001	Salad Dressing Ranch			Kens
+42872001	Salad Dressing Thousand Island		Kens
+*/
+SELECT * FROM products where lower(ProductName) like '%salad dressing%';
+/*
+SKU		ProductName				Manufacturer
+42855001	Cool Whip Regular			Kraft
+*/
+SELECT * FROM products where Manufacturer ='Kraft' and lower(ProductName) like '%cool%';
+/*
+SKU		ProductName				Manufacturer
+42856001	Deluxe Mac & Cheese Four Cheese		Kraft
+42857001	Mac & Cheese Southwest Chipotle		Kraft
+*/
+SELECT * FROM products where Manufacturer ='Kraft' and lower(ProductName) like '%cheese%';
+/*
+SKU		ProductName				Manufacturer
+42867001	Cooking Stock Chicken			Kitchen Basics
+*/
+SELECT * FROM products where Manufacturer ='Kitchen Basics';
+/*
+SKU		ProductName				Manufacturer
+42868001	Flour All Purpose			King Arthur
+42967001	Cake Mix Yellow				Jiffy
+42968001	Mix Baking				Jiffy
+42969001	Mix Pizza Crust				Jiffy
+42970001	Muffin Mix Blueberry			Jiffy
+42971001	Muffin Mix Corn				Jiffy
+42972001	Muffin Mix Corn				Jiffy
+42973001	Muffin Mix Raspberry			Jiffy
+42974001	Muffin Mix Vegetarian Corn		Jiffy
+*/
+SELECT * FROM products where Manufacturer ='King Arthur' or Manufacturer = 'Jiffy';
+/*
+SKU		ProductName				Manufacturer
+42966001	Baby Shampoo Original			Johnsons
+*/
+SELECT * FROM products where Manufacturer ='Johnsons' and lower(ProductName) like '%shampoo%';
+/*
+SKU		ProductName				Manufacturer
+42964001	Baby Oil Original			Johnsons
+42965001	Baby Powder Original			Johnsons
+*/
+SELECT * FROM products where Manufacturer ='Johnsons' and lower(ProductName) not like '%shampoo%';
+/*
+SKU		ProductName				Manufacturer
+43006001	Mashed Potatoes Four Cheese		Idahoan
+*/
+SELECT * FROM products where Manufacturer ='Idahoan';
+/*
+SKU		ProductName				Manufacturer
+43008001	Sour Cream Original			Hunts
+*/
+SELECT * FROM products where Manufacturer = 'Hunts' and lower(ProductName) like '%sour cream%';
+

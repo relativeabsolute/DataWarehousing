@@ -1,0 +1,23 @@
+SKU		ProductName						Manufacturer		NewItemType	OldItemType		Reason
+42569001	Stuffing Corn Bread					Pepperidge Farm		Spices		Stuffing		I determined Spices as the closest item type to Stuffing
+42511001	Evaporated Milk Original				Pet			Milk		Baking Supplies		I determined Milk as the closest item
+43894001	Condensed Milk Sweetened				Borden			Milk		Baking Supplies		I determined Milk as the closest item
+42480001	Grands Biscuits Buttermilk				Pillsbury		Muffins		Other Dairy/Not Milk	I determined Muffins as the closest item		
+42481001	Grands Biscuits Flaky Layers Buttermilk			Pillsbury		Muffins		Other Dairy/Not Milk	I determined Muffins as the closest item
+42482001	Grands Biscuits Southern Homestyle Buttermilk		Pillsbury		Muffins		Other Dairy/Not Milk	I determined Muffins as the closest item
+42483001	Grands Biscuits Southern Homestyle Buttermilk		Pillsbury		Muffins		Other Dairy/Not Milk	I determined Muffins as the closest item
+42484001	Grands Junior Biscuits Flaky Layers Buttermilk		Pillsbury		Muffins		Other Dairy/Not Milk	I determined Muffins as the closest item
+43788001	Snack Mix Chocolate Peanut				Chex Mix		Pretzels	Snacks			Product could be represented as Pretzels or Nuts chose Pretzels
+43961001	Fruit Snacks SpongeBob					Betty Crocker		Baby Food	Snacks			I determined Baby Food as the closest item type to Fruit Snacks SpongeBob
+44151001	Snack Cakes Vanilla					All But Gluten		Donuts		Snacks			I determined Donuts as the closest item type to Snack Cakes Vanilla
+42852001	Twisted Bread Sticks Garlic				Kroger			French Fries	Snacks			I determined French Fries as the closest item type to Twisted Bread Sticks Garlic
+42853001	Twisted Bread Sticks Mozzarella				Kroger			French Fries	Snacks			I determined French Fries as the closest item type to Twisted Bread Sticks Mozzarella
+42925001	Rice Krispies Treats Marshmallows Squares		Kelloggs		Crackers	Snacks			I determined Crackers as the closest item
+42927001	Special K Berry Pastry Crisps				Kelloggs		Crackers	Snacks			I determined Muffins as the closest item
+42928001	Special K Blueberry Pastry Crisps			Kelloggs		Crackers	Snacks			I determined Muffins as the closest item
+42929001	Special K Brown Sugar Cinnamon Pastry Crisps		Kelloggs		Crackers	Snacks			I determined Muffins as the closest item
+42931001	Special K Chocolate Carmel Pastry Crisps		Kelloggs		Crackers	Snacks			I determined Muffins as the closest item
+42935001	Special K Delight Chocolatey Pastry Crisps		Kelloggs		Crackers	Snacks			I determined Muffins as the closest item
+42936001	Special K Indulgent Moments Dreamy Coconut Snack Bites	Kelloggs		Crackers	Snacks			I determined Muffins as the closest item
+42937001	Special K Moments Caramel Pretzel Bliss Snack Bites	Kelloggs		Crackers	Snacks			I determined Muffins as the closest item
+42943001	Special K Strawberry Pastry Crisps			Kelloggs		Crackers	Snacks			I determined Muffins as the closest item

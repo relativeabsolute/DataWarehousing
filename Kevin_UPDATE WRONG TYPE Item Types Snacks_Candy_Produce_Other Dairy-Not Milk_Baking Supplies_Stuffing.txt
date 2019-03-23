@@ -1,0 +1,238 @@
+/*
+SKU		ProductName			Manufacturer	NewItemType		OldItemType
+42364001	Peanut Butter Cups King Size	Reeses		Chocolate Candy		Candy
+*/
+UPDATE products SET ItemType = 'Chocolate Candy' where ItemType = 'Candy';
+/*
+SKU		ProductName			Manufacturer	NewItemType		OldItemType
+42396001	Lettuce Head			Produce		Fresh Vegetables	Produce			
+42397001	Turnip Greens Vegetables	Produce		Fresh Vegetables	Produce
+*/
+UPDATE products SET ItemType = 'Fresh Vegetables' where ItemType = 'Produce';
+/*
+SKU		ProductName			Manufacturer	NewItemType		OldItemType
+42569001	Stuffing Corn Bread		Pepperidge Farm	Spices			Stuffing
+*/
+UPDATE products SET ItemType = 'Spices' where ItemType = 'Stuffing';
+/*
+SKU		ProductName			Manufacturer	NewItemType		OldItemType
+42511001	Evaporated Milk Original	Pet		Milk			Baking Supplies
+43894001	Condensed Milk Sweetened	Borden		Milk			Baking Supplies
+*/
+UPDATE products SET ItemType = 'Milk' where ItemType = 'Baking Supplies';
+/*
+SKU		ProductName					Manufacturer	NewItemType	OldItemType
+42480001	Grands Biscuits Buttermilk			Pillsbury	Muffins		Other Dairy/Not Milk		
+42481001	Grands Biscuits Flaky Layers Buttermilk		Pillsbury	Muffins		Other Dairy/Not Milk
+42482001	Grands Biscuits Southern Homestyle Buttermilk	Pillsbury	Muffins		Other Dairy/Not Milk
+42483001	Grands Biscuits Southern Homestyle Buttermilk	Pillsbury	Muffins		Other Dairy/Not Milk
+42484001	Grands Junior Biscuits Flaky Layers Buttermilk	Pillsbury	Muffins		Other Dairy/Not Milk
+42854001	American Singles 2% Milk			Kraft		Cheese		Other Dairy/Not Milk
+*/
+UPDATE products SET ItemType = 'Muffins' where ItemType = 'Other Dairy/Not Milk' and Manufacturer = 'Pillsbury';
+UPDATE products SET ItemType = 'Cheese' where ItemType = 'Other Dairy/Not Milk' and Manufacturer = 'Kraft';
+/*
+SKU		ProductName					Manufacturer	NewItemType	OldItemType
+42363001	Honey Wheat Rods Pretzels			Rolled Gold	Pretzels	Snacks
+43788001	Snack Mix Chocolate Peanut			Chex Mix	Pretzels	Snacks
+*/
+UPDATE products SET ItemType = 'Pretzels' where ItemType = 'Snacks' and (lower(ProductName) like '%pretzels%' or Manufacturer = 'Chex Mix');
+/*
+SKU		ProductName						Manufacturer	NewItemType	OldItemType
+42693001	Chips Ahoy Cookies Chewy Reeses Peanut Butter Cup	Nabisco		Cookies		Snacks
+42703001	Chips Ahoy Cookies Soft Chunky Peanut Butter		Nabisco		Cookies		Snacks
+43691001	Shortbread Cookies					Eating Right	Cookies		Snacks
+*/
+UPDATE products SET ItemType = 'Cookies' WHERE ItemType = 'Snacks' and lower(ProductName) like '%cookies%';
+/*
+SKU		ProductName					Manufacturer	NewItemType	OldItemType
+43961001	Fruit Snacks SpongeBob				Betty Crocker	Baby Food	Snacks
+*/
+UPDATE products SET ItemType = 'Baby Food' where ItemType = 'Snacks' and lower(ProductName) like '%spongebob%';
+/*
+SKU		ProductName						Manufacturer	NewItemType	OldItemType
+42383001	Stone Wheat Thins Original				Red Oval Farms	Crackers	Snacks
+*/
+UPDATE products SET ItemType = 'Crackers' where ItemType = 'Snacks' and Manufacturer  = 'Red Oval Farms';
+/*
+SKU		ProductName						Manufacturer	NewItemType	OldItemType
+44151001	Snack Cakes Vanilla					All But Gluten	Donuts		Snacks
+*/
+UPDATE products SET ItemType = 'Donuts' where ItemType = 'Snacks' and Manufacturer  = 'All But Gluten';
+/*
+SKU		ProductName						Manufacturer	NewItemType	OldItemType
+42852001	Twisted Bread Sticks Garlic				Kroger		French Fries	Snacks
+42853001	Twisted Bread Sticks Mozzarella				Kroger		French Fries	Snacks
+*/
+UPDATE products SET ItemType = 'French Fries' where ItemType = 'Snacks' and Manufacturer = 'Kroger';
+/*
+SKU		ProductName							Manufacturer	NewItemType	OldItemType
+42387001	Apple Nut Harvest Real Medley Bars				Quaker		Cereal		Snacks
+42388001	Cherry Pistachio Real Medley Bars				Quaker		Cereal		Snacks
+42389001	Granola Bars Chewy Chocolate Chip				Quaker		Cereal		Snacks
+42393001	Peach Almond Real Medley Bars					Quaker		Cereal		Snacks
+42394001	Yogurt Strawberry Chewy Granola Bars				Quaker		Cereal		Snacks
+42910001	Nutri Grain Chocolatey Crunch Granola Bar			Kelloggs	Cereal		Snacks
+42911001	Nutri Grain Fruit Crunch Apple Cobbler Granola Bars		Kelloggs	Cereal		Snacks
+42912001	Nutri Grain Fruit Crunch Strawberry Parfait Granola Bars	Kelloggs	Cereal		Snacks
+42916001	Nutri Grain Strawberry Vanilla Fruit Yogurt Bar			Kelloggs	Cereal		Snacks
+42917001	Nutri Grain Toffee Crunch Bar					Kelloggs	Cereal		Snacks
+42918001	Nutri-Grain Harvest Strawberry Fruit & Oat Bars			Kelloggs	Cereal		Snacks
+42940001	Special K Protein Greek Yogurt & Fruit Snack Bar		Kelloggs	Cereal		Snacks
+*/
+UPDATE products SET ItemType = 'Cereal' where ItemType = 'Snacks' 
+and (Manufacturer = 'Kelloggs' or Manufacturer = 'Quaker') and ProductName like '%bar%';
+/*
+SKU		ProductName						Manufacturer	NewItemType	OldItemType
+42925001	Rice Krispies Treats Marshmallows Squares		Kelloggs	Crackers	Snacks
+42927001	Special K Berry Pastry Crisps				Kelloggs	Crackers	Snacks
+42928001	Special K Blueberry Pastry Crisps			Kelloggs	Crackers	Snacks
+42929001	Special K Brown Sugar Cinnamon Pastry Crisps		Kelloggs	Crackers	Snacks
+42931001	Special K Chocolate Carmel Pastry Crisps		Kelloggs	Crackers	Snacks
+42935001	Special K Delight Chocolatey Pastry Crisps		Kelloggs	Crackers	Snacks
+42936001	Special K Indulgent Moments Dreamy Coconut Snack Bites	Kelloggs	Crackers	Snacks
+42937001	Special K Moments Caramel Pretzel Bliss Snack Bites	Kelloggs	Crackers	Snacks
+42943001	Special K Strawberry Pastry Crisps			Kelloggs	Crackers	Snacks
+*/
+UPDATE products SET ItemType = 'Crackers' where ItemType = 'Snacks' and 
+(Manufacturer = 'Kelloggs' or Manufacturer = 'Quaker') and ProductName not like '%bar%';
+/*
+SKU		ProductName						Manufacturer	NewItemType	OldItemType
+42399001	Bacon Potato Crisps					Pringles	Chips		Snacks
+42400001	BBQ Grab & Go						Pringles	Chips		Snacks
+42401001	BBQ Potato Crisps					Pringles	Chips		Snacks
+42402001	Buffalo Ranch Potato Crisps				Pringles	Chips		Snacks
+42403001	Cheddar & Sour Cream Potato Crisps			Pringles	Chips		Snacks
+42404001	Cheddar Cheese Grab & Go				Pringles	Chips		Snacks
+42405001	Cheddar Cheese Potato Crisps				Pringles	Chips		Snacks
+42406001	Cheese Burger Potato Crisps				Pringles	Chips		Snacks
+42407001	Honey Butter Stix					Pringles	Chips		Snacks
+42408001	Honey Mustard Potato Crisps				Pringles	Chips		Snacks
+42409001	Jalapeno Potato Crisps					Pringles	Chips		Snacks
+42410001	Lightly Salted Cheddar Cheese Potato Crisps		Pringles	Chips		Snacks
+42411001	Lightly Salted Potato Crisps				Pringles	Chips		Snacks
+42412001	Loaded Baked Potato Potato Crisps			Pringles	Chips		Snacks
+42413001	Loud Fiery Chili Lime Corn Crisps			Pringles	Chips		Snacks
+42414001	Loud Mighty Margherita Pizza Grain & Vegetable Crisps	Pringles	Chips		Snacks
+42415001	Loud Salsa Fiesta Corn Crisps				Pringles	Chips		Snacks
+42416001	Loud Spicy Queso Corn Crisps				Pringles	Chips		Snacks
+42417001	Loud Super Cheesy Italian Grain & Vegetable Crisps	Pringles	Chips		Snacks
+42418001	Memphis BBQ Potato Crisps				Pringles	Chips		Snacks
+42419001	Mixed Flavors Snack Stacks				Pringles	Chips		Snacks
+42420001	Original Fat Free Potato Chips				Pringles	Chips		Snacks
+42421001	Original Grab & Go					Pringles	Chips		Snacks
+42422001	Original Potato Crisps					Pringles	Chips		Snacks
+42423001	Original Potato Crisps					Pringles	Chips		Snacks
+42424001	Pizza Potato Crisps					Pringles	Chips		Snacks
+42425001	Pizza Stix						Pringles	Chips		Snacks
+42426001	Ranch Potato Crisps					Pringles	Chips		Snacks
+42427001	Reduced Fat Potato Crisps				Pringles	Chips		Snacks
+42428001	Reduced Fat Sour Cream & Onion Potato Crisps		Pringles	Chips		Snacks
+42429001	Salt & Vinegar Potato Crisps				Pringles	Chips		Snacks
+42430001	Screamin Dill Pickle Potato Crisps			Pringles	Chips		Snacks
+42431001	Sour Cream & Onion Grab & Go				Pringles	Chips		Snacks
+42432001	Sour Cream & Onion Potato Crisps			Pringles	Chips		Snacks
+42433001	Sour Cream & Onion Stacks				Pringles	Chips		Snacks
+42434001	Variety Pack Grab & Go					Pringles	Chips		Snacks
+43409001	Doritos & Cheetos Mix 2Go				Frito Lay	Chips		Snacks
+43410001	Doritos Cool Ranch					Frito Lay	Chips		Snacks
+43411001	Doritos Cool Ranch					Frito Lay	Chips		Snacks
+43412001	Doritos Jacked Ranch Dipped Hot Wings			Frito Lay	Chips		Snacks
+43413001	Doritos Mix Cheese Explosion				Frito Lay	Chips		Snacks
+43414001	Doritos Mix Taco Explosion				Frito Lay	Chips		Snacks
+43415001	Doritos Nacho Cheese					Frito Lay	Chips		Snacks
+43416001	Doritos Nacho Cheese					Frito Lay	Chips		Snacks
+43417001	Doritos Nacho Cheese					Frito Lay	Chips		Snacks
+43418001	Doritos Nacho Cheese					Frito Lay	Chips		Snacks
+43419001	Doritos Simply Organic White Cheddar Tortilla Chips	Frito Lay	Chips		Snacks
+43420001	Doritos Spicy Nacho					Frito Lay	Chips		Snacks
+43421001	Doritos Spicy Sweet Chili				Frito Lay	Chips		Snacks
+43422001	Doritos Taco Tortilla Chips				Frito Lay	Chips		Snacks
+43423001	Lays Dip French Onion					Frito Lay	Chips		Snacks
+43424001	Lays Dip Ranch						Frito Lay	Chips		Snacks
+43425001	Lays Kettle Cooked Cream Cheese & Chive			Frito Lay	Chips		Snacks
+43426001	Lays Kettle Cooked Jalapeno				Frito Lay	Chips		Snacks
+43427001	Lays Kettle Cooked Jalapeno Cheddar			Frito Lay	Chips		Snacks
+43428001	Lays Kettle Cooked Lattice Cut Sea Salt			Frito Lay	Chips		Snacks
+43429001	Lays Kettle Cooked Lightly Salted Olive Oil & Herb	Frito Lay	Chips		Snacks
+43430001	Lays Kettle Cooked Mesquite BBQ				Frito Lay	Chips		Snacks
+43431001	Lays Kettle Cooked Original				Frito Lay	Chips		Snacks
+43432001	Lays Kettle Cooked Reduced Fat				Frito Lay	Chips		Snacks
+43433001	Lays Kettle Cooked Sea Salt & Cracked Pepper		Frito Lay	Chips		Snacks
+43434001	Lays Kettle Cooked Sea Salt & Vinegar			Frito Lay	Chips		Snacks
+43435001	Lays Poppables Sea Salt					Frito Lay	Chips		Snacks
+43436001	Lays Poppables White Cheddar				Frito Lay	Chips		Snacks
+43437001	Lays Potato Chips Baked BBQ				Frito Lay	Chips		Snacks
+43438001	Lays Potato Chips BBQ					Frito Lay	Chips		Snacks
+43439001	Lays Potato Chips BBQ					Frito Lay	Chips		Snacks
+43440001	Lays Potato Chips Cheddar & Sour Cream			Frito Lay	Chips		Snacks
+43441001	Lays Potato Chips Classic				Frito Lay	Chips		Snacks
+43442001	Lays Potato Chips Classic				Frito Lay	Chips		Snacks
+43443001	Lays Potato Chips Honey BBQ				Frito Lay	Chips		Snacks
+43444001	Lays Potato Chips Lightly Salted			Frito Lay	Chips		Snacks
+43445001	Lays Potato Chips Lightly Salted			Frito Lay	Chips		Snacks
+43446001	Lays Potato Chips Lightly Salted BBQ			Frito Lay	Chips		Snacks
+43447001	Lays Potato Chips Original				Frito Lay	Chips		Snacks
+43448001	Lays Potato Chips Oven Baked Original			Frito Lay	Chips		Snacks
+43449001	Lays Potato Chips Salt & Vinegar			Frito Lay	Chips		Snacks
+43450001	Lays Potato Chips Sour Cream & Onion			Frito Lay	Chips		Snacks
+43451001	Lays Potato Chips Sour Cream & Onion			Frito Lay	Chips		Snacks
+43452001	Lays Potato Chips Sweet Southern Heat BBQ		Frito Lay	Chips		Snacks
+43453001	Lays Potato Chips Wavy					Frito Lay	Chips		Snacks
+43454001	Lays Potato Chips Wavy					Frito Lay	Chips		Snacks
+43455001	Lays Potato Chips Wavy Hickory BBQ			Frito Lay	Chips		Snacks
+43456001	Lays Potato Chips Wavy Lightly Salted			Frito Lay	Chips		Snacks
+43457001	Lays Stax Cheddar					Frito Lay	Chips		Snacks
+43458001	Lays Stax Original					Frito Lay	Chips		Snacks
+43459001	Lays Stax Salt & Vinegar				Frito Lay	Chips		Snacks
+43460001	Lays Stax Sour Cream & Onion				Frito Lay	Chips		Snacks
+43461001	Lays Variety Pack Fun Time Mix				Frito Lay	Chips		Snacks
+43462001	Lays Variety Pack Party Mix				Frito Lay	Chips		Snacks
+43463001	Ruffles Oven Baked Cheddar & Sour Cream			Frito Lay	Chips		Snacks
+43464001	Ruffles Oven Baked Garlic & Ranch			Frito Lay	Chips		Snacks
+43465001	Ruffles Oven Baked Original				Frito Lay	Chips		Snacks
+43466001	Ruffles Potato Chips All Dressed			Frito Lay	Chips		Snacks
+43467001	Ruffles Potato Chips Cheddar & Sour Cream		Frito Lay	Chips		Snacks
+43468001	Ruffles Potato Chips Classic Hot Wings			Frito Lay	Chips		Snacks
+43469001	Ruffles Potato Chips Flamin Hot				Frito Lay	Chips		Snacks
+43470001	Ruffles Potato Chips Jalapeno Ranch			Frito Lay	Chips		Snacks
+43471001	Ruffles Potato Chips Loaded Bacon And Cheddar		Frito Lay	Chips		Snacks
+43472001	Ruffles Potato Chips Original				Frito Lay	Chips		Snacks
+43473001	Ruffles Potato Chips Original				Frito Lay	Chips		Snacks
+43474001	Ruffles Potato Chips Reduced Fat			Frito Lay	Chips		Snacks
+43475001	Ruffles Potato Chips Sour Cream & Onion			Frito Lay	Chips		Snacks
+43476001	Ruffles Simply Sea Salted				Frito Lay	Chips		Snacks
+43477001	Tostitos Bite Size Rounds				Frito Lay	Chips		Snacks
+43478001	Tostitos Cantina Thin & Crispy				Frito Lay	Chips		Snacks
+43479001	Tostitos Cantina Traditional				Frito Lay	Chips		Snacks
+43480001	Tostitos Dip Creamy Spinach				Frito Lay	Chips		Snacks
+43481001	Tostitos Dip Medium Queso Blanco			Frito Lay	Chips		Snacks
+43482001	Tostitos Dip Medium Salsa Con Queso			Frito Lay	Chips		Snacks
+43483001	Tostitos Dip Smooth & Cheesy				Frito Lay	Chips		Snacks
+43484001	Tostitos Salsa Cantina Chipotle				Frito Lay	Chips		Snacks
+43485001	Tostitos Salsa Restaurant Style				Frito Lay	Chips		Snacks
+43486001	Tostitos Salsa Roasted Garlic				Frito Lay	Chips		Snacks
+43487001	Tostitos Salsa Thick & Chunky Mild			Frito Lay	Chips		Snacks
+43488001	Tostitos Simply Organic Black Bean			Frito Lay	Chips		Snacks
+43489001	Tostitos Simply Organic Salsa Chunky Medium		Frito Lay	Chips		Snacks
+43490001	Tostitos Simply Organic Scoops				Frito Lay	Chips		Snacks
+43491001	Tostitos Simply Organic Yellow Corn			Frito Lay	Chips		Snacks
+43492001	Tostitos Simply Salsa Black Bean & Corn			Frito Lay	Chips		Snacks
+43493001	Tostitos Tortilla Chips Hint Of Jalapeno		Frito Lay	Chips		Snacks
+43494001	Tostitos Tortilla Chips Hint Of Lime			Frito Lay	Chips		Snacks
+43495001	Tostitos Tortilla Chips Multigrain Scoops		Frito Lay	Chips		Snacks
+43496001	Tostitos Tortilla Chips Original			Frito Lay	Chips		Snacks
+43497001	Tostitos Tortilla Chips Oven Baked Scoops		Frito Lay	Chips		Snacks
+43498001	Tostitos Tortilla Chips Restaurant Style		Frito Lay	Chips		Snacks
+43499001	Tostitos Tortilla Chips Scoops				Frito Lay	Chips		Snacks
+43500001	Tostitos Tortilla Chips Simply Blue Corn		Frito Lay	Chips		Snacks
+43501001	Tostitos Tortilla Chips White Corn Crispy Rounds	Frito Lay	Chips		Snacks
+43502001	Variety Pack Baked & Popped Mix				Frito Lay	Chips		Snacks
+43503001	Variety Pack Bold Mix					Frito Lay	Chips		Snacks
+43504001	Variety Pack Cheesy Mix					Frito Lay	Chips		Snacks
+43505001	Variety Pack Classic Mix				Frito Lay	Chips		Snacks
+43506001	Variety Pack Fiery Mix					Frito Lay	Chips		Snacks
+43507001	Variety Pack Flavor Mix					Frito Lay	Chips		Snacks
+*/
+UPDATE products SET ItemType = 'Chips' where ItemType = 'Snacks' and 
+(Manufacturer = 'Pringles' or Manufacturer = 'Frito Lay');

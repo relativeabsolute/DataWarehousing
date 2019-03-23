@@ -1,0 +1,28 @@
+SKU		ProductName						Manufacturer	NewItemType		Reason
+42751001	Coolers Fruit Punch					Minute Maid	Flavored Drinks		Product could be represented as Flavored Drinks or Juice chose Flavored Drinks
+42752001	Fruit Drink Peach					Minute Maid	Flavored Drinks		Product could be represented as Flavored Drinks or Juice chose Flavored Drinks
+42795001	Brownies Cosmic						Little Debbie	Cookies			I determined Cookies as the closest item type
+42796001	Brownies Fudge						Little Debbie	Cookies			I determined Cookies as the closest item type
+42798001	Cake Cloud Cakes					Little Debbie	Donuts			I determined Donuts as the closest item type
+42799001	Cake Swiss Rolls					Little Debbie	Donuts			I determined Donuts as the closest item type
+42800001	Cake Zebra Cakes					Little Debbie	Donuts			I determined Donuts as the closest item type
+42803001	Cupcakes Chocolate					Little Debbie	Donuts			I determined Donuts as the closest item type
+42807001	Pie Marshmallow Chocolate				Little Debbie	Donuts			I determined Donuts as the closest item type
+42797001	Buns Honey						Little Debbie	Donuts			I determined Donuts as the closest item type
+42808001	Spin Wheels Pecan					Little Debbie	Muffins			I determined Muffins as the closest item type
+42810001	Tea Bags Black Tea & Honey Berry Lemonade Decaf		Lipton		Coffee			I determined Coffee as the closest item type to Tea
+42811001	Tea Bags Green Tea & Honey Coconut Passionfruit		Lipton		Coffee			I determined Coffee as the closest item type to Tea
+42812001	Tea Bags Green Tea & Honey Dragonfruit Peach		Lipton		Coffee			I determined Coffee as the closest item type to Tea
+42813001	Tea Stix Tea & Honey Lemon				Lipton		Coffee			I determined Coffee as the closest item type to Tea
+42855001	Cool Whip Regular					Kraft		Milk			I determined Milk as the closest item type to Cool Whip
+42964001	Baby Oil Original					Johnsons	Personal Hygiene	I determined Personal Hygiene as the closest item type
+42965001	Baby Powder Original					Johnsons	Personal Hygiene	I determined Personal Hygiene as the closest item type
+42967001	Cake Mix Yellow						Jiffy		Sugar			I determined Sugar as the closest item type to Cake Mix 
+42968001	Mix Baking						Jiffy		Sugar			I determined Sugar as the closest item type to Mix Baking
+42969001	Mix Pizza Crust						Jiffy		Sugar			I determined Sugar as the closest item type to Mix Pizza Crust	
+42970001	Muffin Mix Blueberry					Jiffy		Sugar			Product could be represented as Sugar or Muffins chose Sugar because sugar is a baking good while muffins are a baked good and Jiffy is used for baking
+42971001	Muffin Mix Corn						Jiffy		Sugar			Product could be represented as Sugar or Muffins chose Sugar because sugar is a baking good while muffins are a baked good and Jiffy is used for baking
+42972001	Muffin Mix Corn						Jiffy		Sugar			Product could be represented as Sugar or Muffins chose Sugar because sugar is a baking good while muffins are a baked good and Jiffy is used for baking
+42973001	Muffin Mix Raspberry					Jiffy		Sugar			Product could be represented as Sugar or Muffins chose Sugar because sugar is a baking good while muffins are a baked good and Jiffy is used for baking
+42974001	Muffin Mix Vegetarian Corn				Jiffy		Sugar			Product could be represented as Sugar or Muffins chose Sugar because sugar is a baking good while muffins are a baked good and Jiffy is used for baking
+43006001	Mashed Potatoes Four Cheese				Idahoan		Canned Vegetables	Product could be represented as Canned Vegetables or Fresh Vegetables or Sugar (since it is a powder) chose Canned Vegetables even though it comes in a package not a can becuase it makes the most sense out of the 3 closest item types
